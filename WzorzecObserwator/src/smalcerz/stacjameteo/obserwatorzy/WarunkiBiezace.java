@@ -2,7 +2,7 @@ package smalcerz.stacjameteo.obserwatorzy;
 
 
 import smalcerz.stacjameteo.podmiot.*;
-
+ 
 
 
 
