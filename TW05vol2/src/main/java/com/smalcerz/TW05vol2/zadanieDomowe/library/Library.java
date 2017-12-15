@@ -9,6 +9,7 @@ import com.smalcerz.TW05vol2.zadanieDomowe.ludziki.FifoOfPeople;
 import com.smalcerz.TW05vol2.zadanieDomowe.ludziki.Reader;
 import com.smalcerz.TW05vol2.zadanieDomowe.ludziki.Writer;
 //singleton
+@SuppressWarnings("unused")
 public class Library {
 
 	private static Library library;
@@ -45,16 +46,17 @@ public class Library {
 		this.writerIsWaitingForEmptyLibrary = true;
 //		System.out.println("HERE3");
 		while(this.countOfReadersInLibrary > 0) {
-			System.out.println("writer is waiting for readers to go out of library, writer id: " + writer.getId());
+			//System.out.println("writer is waiting for readers to go out of library, writer id: " + writer.getId());
 			this.noMoreReaders.await();
 			
 		}
 		
 	
 		
-		System.out.println("Writer with id: " + writer.getId() + " has started writing");
-		writer.sleep(Random.getRandom(10, 100));
-		System.out.println("Writer with id: " + writer.getId() + " has just finished writing\n\n");
+		//System.out.println("Writer with id: " + writer.getId() + " has started writing");
+		//writer.sleep(Random.getRandom(10, 100));
+		Writer.sleep(100);
+		//System.out.println("Writer with id: " + writer.getId() + " has just finished writing\n\n");
 		
 		
 		this.writerIsWaiting.signalAll();//signal all of readers that are waiting in the queque
@@ -69,7 +71,7 @@ public class Library {
 	@SuppressWarnings("static-access")
 	public void startReaderTask(Reader reader) throws InterruptedException {
 		
-		Reader.sleep(Random.getRandom(10, 500));
+		
 		this.lock.lock();
 		while(this.writerIsWaitingForEmptyLibrary) {
 			//System.out.println(" reader is waiting, writer is waiting for library or is in library, reader id: " + reader.getId());
@@ -78,16 +80,17 @@ public class Library {
 		this.countOfReadersInLibrary +=1;
 		this.lock.unlock();
 		
-		System.out.println("Reader with id: " + reader.getId() + " has started reading");
-		reader.sleep(Random.getRandom(100, 500));
-		System.out.println("Reader with id: " + reader.getId() + " has just finished reading");
+		//System.out.println("Reader with id: " + reader.getId() + " has started reading");
+		//reader.sleep(Random.getRandom(100, 500));
+		Reader.sleep(120);
+		//System.out.println("Reader with id: " + reader.getId() + " has just finished reading");
 		
 		
 		this.lock.lock();
 		this.countOfReadersInLibrary -=1;
 		if(this.countOfReadersInLibrary <= 0) {
 			this.noMoreReaders.signal();
-			System.out.println("\n\nreaders out of library");
+			//System.out.println("\n\nreaders out of library");
 		}
 		this.lock.unlock();
 		
